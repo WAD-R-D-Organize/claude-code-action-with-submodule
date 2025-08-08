@@ -26,26 +26,30 @@ jobs:
       actions: read
       checks: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
       - name: Generate GitHub App Token
         id: generate-token
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          # Optional: Specify repositories if needed
-          # repositories: |
-          #   ${{ github.repository }}
+          # Specify owner and repositories (including submodules)
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            ${{ github.event.repository.name }}
+            # Add your submodule repositories here (repository name only, not full path)
+            # Example: if you have submodules from the same owner
+            # submodule-repo-1
+            # submodule-repo-2
           # Optional: Specify custom permissions
           # permissions: |
           #   contents: write
           #   pull_requests: write
           #   issues: write
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          
       - name: Run Claude PR Action
         uses: anthropics/claude-code-action@beta
         env:
