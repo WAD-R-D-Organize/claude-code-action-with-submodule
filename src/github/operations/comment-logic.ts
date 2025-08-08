@@ -134,49 +134,49 @@ export function updateCommentBody(input: CommentUpdateInput): string {
   // Add links section
   let links = ` —— [View job](${jobUrl})`;
 
-  // Add branch name with link
-  if (branchName || branchLink) {
-    let finalBranchName = branchName;
-    let branchUrl = "";
+  // [DISABLED] Add branch name with link - 使用者要求只顯示到 View job
+  // if (branchName || branchLink) {
+  //   let finalBranchName = branchName;
+  //   let branchUrl = "";
 
-    if (branchLink) {
-      // Extract the branch URL from the link
-      const urlMatch = branchLink.match(/\((https:\/\/.*)\)/);
-      if (urlMatch && urlMatch[1]) {
-        branchUrl = urlMatch[1];
-      }
+  //   if (branchLink) {
+  //     // Extract the branch URL from the link
+  //     const urlMatch = branchLink.match(/\((https:\/\/.*)\)/);
+  //     if (urlMatch && urlMatch[1]) {
+  //       branchUrl = urlMatch[1];
+  //     }
 
-      // Extract branch name from link if not provided
-      if (!finalBranchName) {
-        const branchNameMatch = branchLink.match(/tree\/([^"'\)]+)/);
-        if (branchNameMatch) {
-          finalBranchName = branchNameMatch[1];
-        }
-      }
-    }
+  //     // Extract branch name from link if not provided
+  //     if (!finalBranchName) {
+  //       const branchNameMatch = branchLink.match(/tree\/([^"'\)]+)/);
+  //       if (branchNameMatch) {
+  //         finalBranchName = branchNameMatch[1];
+  //       }
+  //     }
+  //   }
 
-    // If we don't have a URL yet but have a branch name, construct it
-    if (!branchUrl && finalBranchName) {
-      // Extract owner/repo from jobUrl
-      const repoMatch = jobUrl.match(/github\.com\/([^\/]+)\/([^\/]+)\//);
-      if (repoMatch) {
-        branchUrl = `${GITHUB_SERVER_URL}/${repoMatch[1]}/${repoMatch[2]}/tree/${finalBranchName}`;
-      }
-    }
+  //   // If we don't have a URL yet but have a branch name, construct it
+  //   if (!branchUrl && finalBranchName) {
+  //     // Extract owner/repo from jobUrl
+  //     const repoMatch = jobUrl.match(/github\.com\/([^\/]+)\/([^\/]+)\//);
+  //     if (repoMatch) {
+  //       branchUrl = `${GITHUB_SERVER_URL}/${repoMatch[1]}/${repoMatch[2]}/tree/${finalBranchName}`;
+  //     }
+  //   }
 
-    if (finalBranchName && branchUrl) {
-      links += ` • [\`${finalBranchName}\`](${branchUrl})`;
-    } else if (finalBranchName) {
-      links += ` • \`${finalBranchName}\``;
-    }
-  }
+  //   if (finalBranchName && branchUrl) {
+  //     links += ` • [\`${finalBranchName}\`](${branchUrl})`;
+  //   } else if (finalBranchName) {
+  //     links += ` • \`${finalBranchName}\``;
+  //   }
+  // }
 
-  // Add PR link (either from content or provided)
-  const prUrl =
-    prLinkFromContent || (prLink ? prLink.match(/\(([^)]+)\)/)?.[1] : "");
-  if (prUrl) {
-    links += ` • [Create PR ➔](${prUrl})`;
-  }
+  // [DISABLED] Add PR link (either from content or provided) - 使用者要求只顯示到 View job
+  // const prUrl =
+  //   prLinkFromContent || (prLink ? prLink.match(/\(([^)]+)\)/)?.[1] : "");
+  // if (prUrl) {
+  //   links += ` • [Create PR ➔](${prUrl})`;
+  // }
 
   // Build the new body with blank line between header and separator
   let newBody = `${header}${links}`;
