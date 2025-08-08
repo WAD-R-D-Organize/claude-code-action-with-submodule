@@ -96,9 +96,15 @@ jobs:
             **A. Navigate and Branch:**
             ```bash
             cd path/to/submodule
-            # Create branch (avoid detached HEAD)
+            # CRITICAL: Always ensure you're on the latest commit before branching
+            git fetch origin
+            git checkout main  # or master, depending on default branch
+            git pull origin main
+            # Create branch from latest commit (avoid detached HEAD)
             git checkout -b claude/issue-10-20250808-1430
             ```
+
+            **IMPORTANT**: When working with submodules, always create branches from the **latest commit** of the default branch, not from the currently checked-out commit reference in the parent repository. This ensures your changes are based on the most recent submodule state.
 
             **B. Make Changes:**
             - Follow parent repository coding standards
@@ -191,6 +197,7 @@ jobs:
 
             ### Critical Rules:
             - **All headers in Traditional Chinese (繁體中文)**
+            - **Always branch from latest commit in submodules** (not parent's pinned commit)
             - **Push submodule changes BEFORE updating parent**
             - **Test thoroughly before completion**
             - **Document all dependencies with complete URLs**
@@ -219,3 +226,4 @@ jobs:
           #   bun.sh
           #   registry.npmjs.org
           #   .blob.core.windows.net
+          allowed_tools: bash(git:*),bash(npm:*),mcp__github__*
